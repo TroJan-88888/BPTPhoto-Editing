@@ -1,0 +1,716 @@
+:root {
+  --bg: #0f1724;
+  --panel: #0b1220;
+  --accent: #3b82f6;
+  --accent-hover: #2563eb;
+  --text: #e6eef8;
+  --text-secondary: #9fb0d6;
+  --error: #ef4444;
+  --success: #10b981;
+  --music: #8b5cf6;
+  --music-hover: #7c3aed;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: "Inter", "Noto Sans Thai UI", sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.5;
+  background-image: url("https://cdn.pixabay.com/animation/2023/02/25/01/14/01-14-55-999_512.gif");
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  background-repeat: no-repeat;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  overflow-x: hidden;
+}
+
+.app-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  padding: 16px;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.page-navigation {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 16px;
+  width: 100%;
+  max-width: 420px;
+}
+
+.nav-button {
+  flex: 1;
+  padding: 12px 16px;
+  background: rgba(11, 18, 32, 0.9);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 8px;
+  color: var(--text);
+  font-size: 15px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-align: center;
+}
+
+.nav-button:hover {
+  background: rgba(59, 130, 246, 0.2);
+  border-color: var(--accent);
+}
+
+.nav-button.active {
+  background: var(--accent);
+  border-color: var(--accent);
+}
+
+.page {
+  display: none;
+  width: 100%;
+}
+
+.page.active {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+
+.panel {
+  background: rgba(11, 18, 32, 0.9);
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 6px 18px rgba(2, 6, 23, 0.6);
+  width: 100%;
+  max-width: 420px;
+}
+
+h1 {
+  margin: 0 0 16px;
+  font-size: 20px;
+  text-align: center;
+  font-weight: 600;
+}
+
+/* เพิ่มสไตล์สำหรับหน้าแสดงผลเมื่อปิดระบบ */
+.closed-system-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.95);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  z-index: 10000;
+  padding: 20px;
+  text-align: center;
+}
+
+.closed-system-overlay h2 {
+  font-size: 2.5rem;
+  color: var(--accent);
+  margin-bottom: 20px;
+  text-shadow: 0 0 10px rgba(59, 130, 246, 0.5);
+}
+
+.closed-system-overlay p {
+  font-size: 1.2rem;
+  color: var(--text-secondary);
+  margin-bottom: 30px;
+  max-width: 600px;
+}
+
+.closed-system-voice-status {
+  padding: 12px 20px;
+  background: rgba(59, 130, 246, 0.2);
+  border-radius: 20px;
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.closed-system-voice-status span {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--success);
+  animation: pulse 1.5s infinite;
+}
+
+.file-input-container {
+  position: relative;
+  margin-bottom: 16px;
+}
+
+.file-input-label {
+  display: block;
+  padding: 12px 16px;
+  background: rgba(59, 130, 246, 0.1);
+  border: 2px dashed rgba(59, 130, 246, 0.5);
+  border-radius: 8px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.file-input-label:hover {
+  background: rgba(59, 130, 246, 0.15);
+  border-color: var(--accent);
+}
+
+#file1, #file2 {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.controls {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 16px;
+}
+
+button {
+  background: var(--accent);
+  border: none;
+  padding: 10px 16px;
+  border-radius: 8px;
+  color: white;
+  cursor: pointer;
+  font-size: 15px;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  flex: 1;
+  min-width: 120px;
+}
+
+button:hover {
+  background: var(--accent-hover);
+  transform: translateY(-1px);
+}
+
+button:disabled {
+  background: #6b7280;
+  cursor: not-allowed;
+  transform: none;
+}
+
+button.secondary {
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.canvas-wrap {
+  background: rgba(7, 16, 37, 0.9);
+  border-radius: 12px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  position: relative;
+  overflow: hidden;
+}
+
+canvas {
+  background: #0b1220;
+  border-radius: 8px;
+  max-width: 100%;
+  height: auto;
+  touch-action: none;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  display: block;
+}
+
+.preview-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 16px;
+}
+
+.preview {
+  width: 140px;
+  height: 140px;
+  border-radius: 50%;
+  overflow: hidden;
+  background: #061022;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.note {
+  font-size: 14px;
+  color: var(--text-secondary);
+  text-align: center;
+  margin-top: 12px;
+}
+
+.voice-status {
+  margin-top: 8px;
+  padding: 6px 12px;
+  background: rgba(59, 130, 246, 0.2);
+  border-radius: 20px;
+  font-size: 12px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.pulse {
+  animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+  0% { opacity: 1; }
+  50% { opacity: 0.5; }
+  100% { opacity: 1; }
+}
+
+.voice-status span {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--success);
+}
+
+.voice-status.error span {
+  background: var(--error);
+}
+
+.voice-status.inactive span {
+  background: #6b7280;
+}
+
+.notification {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  padding: 12px 16px;
+  border-radius: 8px;
+  background: rgba(11, 18, 32, 0.95);
+  border-left: 4px solid var(--accent);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  z-index: 1000;
+  transform: translateX(150%);
+  transition: transform 0.3s ease;
+}
+
+.notification.show {
+  transform: translateX(0);
+}
+
+.notification.error {
+  border-left-color: var(--error);
+}
+
+.notification.success {
+  border-left-color: var(--success);
+}
+
+.loading {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  border: 3px solid rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  border-top-color: var(--accent);
+  animation: spin 1s ease-in-out infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.tooltip {
+  position: relative;
+  display: inline-block;
+}
+
+.tooltip .tooltiptext {
+  visibility: hidden;
+  width: 200px;
+  background-color: rgba(11, 18, 32, 0.95);
+  color: var(--text);
+  text-align: center;
+  border-radius: 6px;
+  padding: 8px;
+  position: absolute;
+  z-index: 1;
+  bottom: 125%;
+  left: 50%;
+  transform: translateX(-50%);
+  opacity: 0;
+  transition: opacity 0.3s;
+  font-size: 12px;
+}
+
+.tooltip:hover .tooltiptext {
+  visibility: visible;
+  opacity: 1;
+}
+
+/* เพิ่มสไตล์สำหรับระบบเพลง */
+.music-player {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  width: 350px;
+  background: rgba(11, 18, 32, 0.95);
+  border-radius: 12px;
+  padding: 16px;
+  box-shadow: 0 6px 18px rgba(2, 6, 23, 0.6);
+  z-index: 100;
+  border: 1px solid rgba(139, 92, 246, 0.3);
+  cursor: move;
+  user-select: none;
+}
+
+.music-player.dragging {
+  cursor: grabbing;
+  opacity: 0.9;
+}
+
+.music-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+  cursor: move;
+}
+
+.music-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--music);
+}
+
+.music-toggle {
+  background: var(--music);
+  border: none;
+  color: white;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 12px;
+}
+
+.music-toggle:hover {
+  background: var(--music-hover);
+}
+
+.music-controls {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.music-file-input {
+  width: 100%;
+  padding: 8px;
+  background: rgba(139, 92, 246, 0.1);
+  border: 1px dashed rgba(139, 92, 246, 0.5);
+  border-radius: 6px;
+  color: var(--text);
+  font-size: 14px;
+}
+
+.music-buttons {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.music-button {
+  flex: 1;
+  padding: 8px 12px;
+  background: var(--music);
+  border: none;
+  border-radius: 6px;
+  color: white;
+  cursor: pointer;
+  font-size: 14px;
+  min-width: 70px;
+}
+
+.music-button:hover {
+  background: var(--music-hover);
+}
+
+.music-button:disabled {
+  background: #6b7280;
+  cursor: not-allowed;
+}
+
+.music-button.secondary {
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  flex: 0.5;
+}
+
+.music-info {
+  margin-top: 8px;
+  font-size: 12px;
+  color: var(--text-secondary);
+  text-align: center;
+}
+
+.progress-container {
+  width: 100%;
+  height: 6px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 3px;
+  margin-top: 8px;
+  cursor: pointer;
+}
+
+.progress-bar {
+  height: 100%;
+  background: var(--music);
+  border-radius: 3px;
+  width: 0%;
+  transition: width 0.1s;
+}
+
+.music-time {
+  display: flex;
+  justify-content: space-between;
+  font-size: 11px;
+  color: var(--text-secondary);
+  margin-top: 4px;
+}
+
+.volume-control {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.volume-slider {
+  flex: 1;
+  -webkit-appearance: none;
+  height: 4px;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 2px;
+  outline: none;
+}
+
+.volume-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--music);
+  cursor: pointer;
+}
+
+.collapsed .music-controls,
+.collapsed .music-info,
+.collapsed .progress-container,
+.collapsed .music-time,
+.collapsed .volume-control,
+.collapsed .playlist {
+  display: none;
+}
+
+.collapsed {
+  width: auto;
+  padding: 12px;
+}
+
+/* เพิ่มสไตล์สำหรับเพลย์ลิสต์ */
+.playlist {
+  margin-top: 12px;
+  max-height: 150px;
+  overflow-y: auto;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 6px;
+  padding: 8px;
+}
+
+.playlist-item {
+  padding: 6px 8px;
+  font-size: 12px;
+  cursor: pointer;
+  border-radius: 4px;
+  margin-bottom: 4px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.playlist-item:hover {
+  background: rgba(139, 92, 246, 0.1);
+}
+
+.playlist-item.active {
+  background: rgba(139, 92, 246, 0.2);
+  color: var(--music);
+}
+
+.playlist-item-remove {
+  background: none;
+  border: none;
+  color: var(--text-secondary);
+  cursor: pointer;
+  font-size: 14px;
+  padding: 0 4px;
+}
+
+.playlist-item-remove:hover {
+  color: var(--error);
+}
+
+.playlist-controls {
+  display: flex;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.playlist-count {
+  font-size: 11px;
+  color: var(--text-secondary);
+  margin-top: 4px;
+  text-align: center;
+}
+
+/* เพิ่มสไตล์สำหรับเอฟเฟกต์หมุนและจางหาย */
+.rotate-fade-out {
+  animation: rotateFadeOut 3s ease-in-out forwards !important;
+}
+
+@keyframes rotateFadeOut {
+  0% {
+    transform: rotate(0deg) scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: rotate(180deg) scale(0.7);
+    opacity: 0.5;
+  }
+  100% {
+    transform: rotate(360deg) scale(0);
+    opacity: 0;
+    display: none;
+  }
+}
+
+.fade-out-message {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: rgba(0, 0, 0, 0.85);
+  color: var(--accent);
+  padding: 24px 36px;
+  border-radius: 16px;
+  font-size: 1.5rem;
+  text-align: center;
+  z-index: 10001;
+  border: 2px solid var(--accent);
+  box-shadow: 0 0 30px rgba(59, 130, 246, 0.5);
+  animation: fadeInOut 3s ease-in-out forwards;
+  display: none;
+}
+
+@keyframes fadeInOut {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.5);
+  }
+  30% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+  70% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.5);
+    display: none;
+  }
+}
+
+/* เพิ่มสไตล์สำหรับปุ่มเปิดเสียงอีกครั้ง */
+.reopen-audio-button {
+  position: fixed;
+  bottom: 100px;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 14px 28px;
+  background: var(--accent);
+  border: none;
+  border-radius: 12px;
+  color: white;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  z-index: 9999;
+  box-shadow: 0 6px 18px rgba(2, 6, 23, 0.6);
+  display: none;
+  transition: all 0.3s ease;
+}
+
+.reopen-audio-button:hover {
+  background: var(--accent-hover);
+  transform: translateX(-50%) translateY(-2px);
+}
+
+/* เพิ่มสไตล์สำหรับข้อความเงียบ */
+.silent-mode-indicator {
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  padding: 10px 16px;
+  background: rgba(239, 68, 68, 0.2);
+  border: 1px solid var(--error);
+  border-radius: 8px;
+  color: var(--error);
+  font-size: 14px;
+  z-index: 9998;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  display: none;
+}
+
+.silent-mode-indicator span {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--error);
+  animation: pulse 1.5s infinite;
+}
